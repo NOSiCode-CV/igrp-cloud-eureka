@@ -1,0 +1,50 @@
+# General
+spring:
+  application:
+    name: igrp-eureka
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,gateway,routes"
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+    refresh:
+      access: unrestricted
+
+# Eureka client configuration
+eureka:
+  client:
+    register-with-eureka: true
+    initial-instance-info-replication-interval-seconds: 5
+    service-url:
+      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761/eureka/}
+    fetch-registry: true
+    registry-fetch-interval-seconds: 5
+    refresh:
+      enable: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+
+
+
+# Logging configuration
+logging:
+  level:
+    root: ${ROOT_LOG_LEVEL:INFO}
+    cv.igrp.platform: INFO
+    org.springframework.cloud.gateway: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: ${GATEWAY_LOG_LEVEL:DEBUG}
+    org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: ${GATEWAY_LOG_LEVEL:DEBUG}
+    org.springframework.cloud.gateway.discovery.DiscoveryClientRouteDefinitionLocator: ${GATEWAY_LOG_LEVEL:DEBUG}
+    org.springframework.cloud.gateway.handler.predicate: ${GATEWAY_LOG_LEVEL:DEBUG}
+    org.springframework.cloud.loadbalancer: ${GATEWAY_LOG_LEVEL:DEBUG}
+    org.springframework.cloud.kubernetes.discovery: ${GATEWAY_LOG_LEVEL:DEBUG}
+
