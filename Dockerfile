@@ -13,8 +13,8 @@ RUN ./mvnw clean package
 
 FROM eclipse-temurin:21-jdk-alpine
 
-COPY --from=build /app/target/igrp-eureka-0.0.1-SNAPSHOT.jar ./igrp-eureka.jar
+COPY --from=build /app/target/igrp-eureka-gateway-0.0.1-SNAPSHOT.jar ./igrp-eureka-gateway.jar
 
-EXPOSE 8081
+EXPOSE 8080
 
-CMD ["java", "-jar", "./igrp-eureka.jar"]
+CMD ["java", "-jar", "./igrp-eureka-gateway.jar"]

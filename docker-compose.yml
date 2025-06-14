@@ -1,27 +1,35 @@
 services:
-  eureka-server:
-    image: steeltoeoss/eureka-server:latest
-    container_name: eureka-server
+  igrp-eureka-server:
+    build: .
+    container_name: igrp-eureka-server
     ports:
       - "8761:8761"
     environment:
-      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
-      - EUREKA_CLIENT_FETCH_REGISTRY=false
+      - HOSTNAME=igrp-eureka-server
+      - EUREKA_SELF_PRESERVATION=true
+      - ROOT_LOG_LEVEL=INFO
     networks:
       - igrp-network
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
-  igrp-eureka:
-    build: .
-    container_name: igrp-eureka
-    ports:
-      - "8080:8080"
-    environment:
-      - EUREKA_SERVICE_URL=http://eureka-server:8761/eureka/
+  # Example client service to test registration
+  test-client:
+    image: eclipse-temurin:21-jdk-alpine
+    container_name: test-client
+    command: >
+      sh -c "
+        echo 'Testing Eureka server...' &&
+        sleep 10 &&
+        wget -q --spider http://igrp-eureka-server:8761/eureka/apps || exit 1 &&
+        echo 'Eureka server is running!' &&
+        wget -qO- http://igrp-eureka-server:8761/eureka/apps | head -20 &&
+        tail -f /dev/null
+      "
     networks:
       - igrp-network
 
