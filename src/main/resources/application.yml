@@ -14,7 +14,7 @@ management:
         include: "health,info,metrics,env"
   endpoint:
     health:
-      show-details: always
+      showDetails: always
       probes:
         enabled: true
 
@@ -22,16 +22,16 @@ management:
 eureka:
   instance:
     hostname: ${HOSTNAME:eureka-server}  # Good for Kubernetes
-    prefer-ip-address: false  # Use hostname in K8s
+    preferIpAddress: false  # Use hostname in K8s
   client:
-    register-with-eureka: false  # Server doesn't register with itself
-    fetch-registry: false        # Server doesn't fetch from itself
-    service-url:
+    registerWithEureka: false  # Server doesn't register with itself
+    fetchRegistry: false        # Server doesn't fetch from itself
+    serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
   server:
-    enable-self-preservation: ${EUREKA_SELF_PRESERVATION:true}
-    eviction-interval-timer-in-ms: 15000
-    renewal-percent-threshold: 0.85
+    enableSelfPreservation: ${EUREKA_SELF_PRESERVATION:true}
+    evictionIntervalTimerInMs: 15000
+    renewalPercentThreshold: 0.85
 
 # Logging configuration
 logging:
