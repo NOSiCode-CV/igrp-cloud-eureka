@@ -13,6 +13,8 @@ RUN ./mvnw clean package
 
 FROM eclipse-temurin:21-jdk-alpine
 
+RUN apk add --no-cache curl
+
 COPY --from=build /app/target/igrp-eureka-gateway-0.0.1-SNAPSHOT.jar ./igrp-eureka-gateway.jar
 
 EXPOSE 8080
